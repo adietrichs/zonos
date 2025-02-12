@@ -5,7 +5,7 @@ import safetensors
 import torch
 import torch.nn as nn
 from huggingface_hub import hf_hub_download
-from mamba_ssm.utils.generation import InferenceParams
+from zonos.mamba.inference_params import InferenceParams
 from tqdm import tqdm
 
 from zonos.autoencoder import DACAutoencoder

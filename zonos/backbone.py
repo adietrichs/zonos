@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
-from mamba_ssm.models.mixer_seq_simple import create_block
-from mamba_ssm.ops.triton.layer_norm import layer_norm_fn
-from mamba_ssm.utils.generation import InferenceParams
+from zonos.mamba.create_block import create_block
+from zonos.mamba.inference_params import InferenceParams
 
 from zonos.config import BackboneConfig
 
@@ -39,12 +38,9 @@ class ZonosBackbone(nn.Module):
         for layer in self.layers:
             hidden_states, residual = layer(hidden_states, residual, inference_params)
 
-        return layer_norm_fn(
-            hidden_states,
-            self.norm_f.weight,
-            self.norm_f.bias,
-            residual,
-            eps=self.norm_f.eps,
-            residual_in_fp32=self.config.residual_in_fp32,
-            is_rms_norm=self.config.rms_norm,
-        )
+        residual = (hidden_states + residual) if residual is not None else hidden_states
+        hidden_states = self.norm_f(residual.to(dtype=self.norm_f.weight.dtype))
+        if self.config.residual_in_fp32:
+            residual = residual.to(torch.float32)
+
+        return hidden_states, residual
