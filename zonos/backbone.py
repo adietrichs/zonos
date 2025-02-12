@@ -43,4 +43,4 @@ class ZonosBackbone(nn.Module):
         if self.config.residual_in_fp32:
             residual = residual.to(torch.float32)
 
-        return hidden_states, residual
+        return hidden_states
