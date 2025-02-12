@@ -24,7 +24,7 @@ class ZonosBackbone(nn.Module):
                     attn_cfg=config.attn_cfg,
                     norm_epsilon=config.norm_epsilon,
                     residual_in_fp32=config.residual_in_fp32,
-                    fused_add_norm=True,
+                    fused_add_norm=False,
                     rms_norm=config.rms_norm,
                 )
                 for i in range(config.n_layer)
