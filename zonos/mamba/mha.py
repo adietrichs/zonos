@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from einops import rearrange
 
 from flash_attn import flash_attn_with_kvcache
-from flash_attn.layers.rotary import RotaryEmbedding
+from zonos.flash.rotary import RotaryEmbedding
 
 
 def _update_kv_cache(kv, inference_params, layer_idx):
